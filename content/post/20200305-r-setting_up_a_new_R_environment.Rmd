@@ -1,0 +1,23 @@
+---
+title: "Setting up and maintaining an R environment"
+author: "Franz Waldner"
+date: 2020-03-05T21:13:14-05:00
+categories: ["R"]
+tags: ["reproducibility"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+# The wonders of the pacman package
+
+The [pacman](https://github.com/trinker/pacman) package is a wonderful package that greatly facilitates the installation of all the packages that you need to run your project. Simply create a file (e.g., `install_packages.R`) with the following:
+
+```{r include=T, eval=F}
+if (!require("pacman")) install.packages("pacman")
+my_packages <- c('tidyverse', 'star', 'sf', 'caret')
+pacman::p_load(my_packages)
+```
+
+And voila!

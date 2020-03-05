@@ -1,0 +1,18 @@
+---
+title: "Setting up and maintaining an R environment"
+author: "Franz Waldner"
+date: 2020-03-05T21:13:14-05:00
+categories: ["R"]
+tags: ["reproducibility"]
+---
+
+
+
+<div id="the-wonders-of-the-pacman-package" class="section level1">
+<h1>The wonders of the pacman package</h1>
+<p>The <a href="https://github.com/trinker/pacman">pacman</a> package is a wonderful package that greatly facilitates the installation of all the packages that you need to run your project. Simply create a file (e.g., <code>install_packages.R</code>) with the following:</p>
+<pre class="r"><code>if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)
+my_packages &lt;- c(&#39;tidyverse&#39;, &#39;star&#39;, &#39;sf&#39;, &#39;caret&#39;)
+pacman::p_load(my_packages)</code></pre>
+<p>And voila!</p>
+</div>
