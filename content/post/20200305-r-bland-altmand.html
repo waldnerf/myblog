@@ -11,18 +11,13 @@ tags: ["ggplot2"]
 <div id="the-wonders-of-the-pacman-package" class="section level1">
 <h1>The wonders of the pacman package</h1>
 <p>Hello world!</p>
-<p>Today, I’d like to share with you a code for plotting Bland-Altman diagrams. The Bland-Altman diagram (Bland &amp; Altman, 1986 and 1999), or difference plot, is a graphical method to compare two measurements techniques. In this graphical method the differences (or alternatively the ratios) between the two techniques are plotted against the averages of the two techniques. Alternatively (Krouwer, 2008) the differences can be plotted against one of the two methods, if this method is a reference or “gold standard” method. Horizontal lines are drawn at the mean difference, and at the limits of agreement, which are defined as the mean difference plus and minus 1.96 times the standard deviation of the differences.</p>
+<p>Today, I’d like to share with you a code for plotting Bland-Altman diagrams. The Bland-Altman diagram (Bland &amp; Altman, 1986 and 1999), or difference plot, is a graphical method to compare two measurements techniques. In this graphical method the differences (or alternatively the ratios) between the two techniques are plotted against the averages of the two techniques. Alternatively (Krouwer, 2008) the differences can be plotted against one of the two methods, if this method is a reference or “gold standard” method. Horizontal lines are drawn at the mean difference, and at the limits of agreement, which are defined as the mean difference plus and minus 1.96 times the standard deviation of the differences.
+The ‘id’ field allows you to define different categories that will be colored differently on the graph</p>
 <pre class="r"><code>library(ggplot2)
 library(RColorBrewer)
 
-
-plot_Bland_Altman &lt;-
-  function(x,y,id=FALSE, alpha = .05,rep.meas = FALSE,subject,idname = FALSE, xname = &#39;x&#39;,yname = &#39;y&#39;,...) {
-
-    library(ggplot2)
-      library(RColorBrewer)
-    
-    #*** 1. Set a few constants
+BA_analysis &lt;- function(x,y, rep.meas = FALSE,subject,idname = FALSE) {
+  #*** 1. Set a few constants
     z &lt;- qnorm(1 - alpha / 2)  ## value of z corresponding to alpha
     d &lt;- x - y               ## pair-wise differences
     m &lt;- (x + y) / 2           ## pair-wise means
@@ -60,14 +55,23 @@ plot_Bland_Altman &lt;-
     print(d.mn)
     print(ucl)
     print(lcl)
+    return(list(m=d, d=d, d.mn=d.mn, ucl=ucl, lcl=lcl))
+}
+
+plot_Bland_Altman &lt;-
+  function(x,y,id=FALSE, alpha = .05,rep.meas = FALSE,subject,idname = FALSE, xname = &#39;x&#39;,yname = &#39;y&#39;,...) {
+      
+    # run Bland-Altman analysis
+    ba_out &lt;- BA_analysis(x, y, rep.meas = rep.meas, subject=subject)
+    
     
     #*** 5. Make Plot
     xlabstr = paste(c(&#39;Mean(&#39;,xname,&#39;, &#39;,yname,&#39;)&#39;), sep = &quot;&quot;,collapse = &quot;&quot;)
     ylabstr = paste(c(xname, &#39; - &#39;, yname), sep = &quot;&quot;,collapse = &quot;&quot;)
-    id = ifelse(id==FALSE, as.factor(rep(1,length(m))), as.factor(id))
-    xy &lt;- data.frame(m,d,id)
+    id = ifelse(id==FALSE, as.factor(rep(1,length(ba_out$m))), as.factor(id))
+    xy &lt;- data.frame(ba_out$m, ba_out$d,id)
     xy$id &lt;- as.factor(xy$id)
-    maxm &lt;- max(m)
+    maxm &lt;- max(ba_out$m)
 
     #scatterplot of x and y variables
     scatter &lt;- ggplot(xy,aes(m, d)) 
@@ -88,28 +92,16 @@ plot_Bland_Altman &lt;-
       ) +
       ylim(min(lcl, -max(xy$d), min(xy$d)), max(ucl, max(xy$d), -min(xy$d)))+
       xlab(xlabstr) +
-      ylab(ylabstr) +
+      ylab(ylabstr)
       #geom_text(x=maxm-2.4,y=d.mn,label=&#39;Mean&#39;,colour=&#39;black&#39;,size=4)+
       #geom_text(x=maxm-2.4,y=ucl,label=&#39;+1.96 SD&#39;,colour=&#39;black&#39;,size=4)+
       #geom_text(x=maxm-2.4,y=lcl,label=&#39;-1.96 SD&#39;,colour=&#39;black&#39;,size=4)+
-      theme(
-        plot.background = element_blank(),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        axis.line = element_line(color=&quot;black&quot;, size = 1)
-    )
+     
     
     plot(scatter)
       
-    values &lt;- round(cbind(lcl,d.mn,ucl),4)
-    colnames(values) &lt;- c(&quot;LCL&quot;,&quot;Mean&quot;,&quot;UCL&quot;)
-    if (rep.meas == FALSE){
-      Output &lt;- list(limits = values,Var = d.sd ^ 2)
-    } else {
-      Output &lt;- list(limits = values,Var = Sig.dl,MSB = MSB,MSW = MSW)
-    }
-    return(Output)
+   
+    return(scatter)
   }
 
 A &lt;- c(-0.358, 0.788, 1.23, -0.338, -0.789, -0.255, 0.645, 0.506, 
@@ -119,15 +111,13 @@ B &lt;- c(0.121, 1.322, 1.929, -0.339, -0.515, -0.029, 1.322, 0.951,
        0.799, -0.306, -0.158, 0.144, 1.132, -0.675, 2.534, -0.398, 0.537, 
        0.173, 1.508, -1.955)
 
-plot_Bland_Altman(A, B,alpha = .05,rep.meas = F,xname = &#39;A&#39;,yname = &#39;B&#39;)
-## [1] -0.41395
-## [1] 0.1819318
-## [1] -1.009832</code></pre>
-<p><img src="/post/20200305-r-bland-altmand_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-<pre><code>## $limits
-##          LCL   Mean    UCL
-## [1,] -1.0098 -0.414 0.1819
-## 
-## $Var
-## [1] 0.09243237</code></pre>
+plot_Bland_Altman(A, B,alpha = .05,rep.meas = F,xname = &#39;A&#39;,yname = &#39;B&#39;) #+ 
+#    theme(
+#         plot.background = element_blank(),
+#         panel.grid.major = element_blank(),
+#         panel.grid.minor = element_blank(),
+#         panel.background = element_blank(),
+#         axis.line = element_line(color=&quot;black&quot;, size = 1)
+#     )
+</code></pre>
 </div>

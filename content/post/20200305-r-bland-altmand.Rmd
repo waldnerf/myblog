@@ -17,7 +17,7 @@ Hello world!
 Today, I'd like to share with you a code for plotting Bland-Altman diagrams. The Bland-Altman diagram (Bland & Altman, 1986 and 1999), or difference plot, is a graphical method to compare two measurements techniques. In this graphical method the differences (or alternatively the ratios) between the two techniques are plotted against the averages of the two techniques. Alternatively (Krouwer, 2008) the differences can be plotted against one of the two methods, if this method is a reference or "gold standard" method. Horizontal lines are drawn at the mean difference, and at the limits of agreement, which are defined as the mean difference plus and minus 1.96 times the standard deviation of the differences.
 The 'id' field allows you to define different categories that will be colored differently on the graph
 
-```{r include=T, eval=T}
+```{r include=T, eval=F}
 library(ggplot2)
 library(RColorBrewer)
 
