@@ -54,6 +54,9 @@ for(i in nrow(my_df)){
   fitted_values <- t(apply(my_df[i,, drop=F], 1, function(y, t) harmonic_regression(t, y, features=FALSE), t=datesn))
   plot(365*datesn, as.vector(my_df[i,, drop=F]), main='Harmonic regression (n=2, omega=1.5)', xlab='Day of year', ylab='GCVI')
   lines(365*datesn, fitted_values, col='blue')
+  print('Extracted Features:')
+  print(features)
+  print('-------------------------------------------------------------------------')
 }
 
 

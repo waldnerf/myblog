@@ -49,6 +49,13 @@ for(i in nrow(my_df)){
   fitted_values &lt;- t(apply(my_df[i,, drop=F], 1, function(y, t) harmonic_regression(t, y, features=FALSE), t=datesn))
   plot(365*datesn, as.vector(my_df[i,, drop=F]), main=&#39;Harmonic regression (n=2, omega=1.5)&#39;, xlab=&#39;Day of year&#39;, ylab=&#39;GCVI&#39;)
   lines(365*datesn, fitted_values, col=&#39;blue&#39;)
+  print(&#39;Extracted Features:&#39;)
+  print(features)
+  print(&#39;-------------------------------------------------------------------------&#39;)
 }</code></pre>
 <p><img src="/post/20200305-r-harmonic-regression_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre><code>## [1] &quot;Extracted Features:&quot;
+##      (Intercept)   cos(t1)   sin(t1)    cos(t2)    sin(t2)        r2      rmse
+## [1,]    3.573693 0.9576383 -2.326456 -0.5541966 -0.4679653 0.8985071 0.7046922
+## [1] &quot;-------------------------------------------------------------------------&quot;</code></pre>
 </div>
