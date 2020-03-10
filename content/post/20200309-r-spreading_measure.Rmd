@@ -13,7 +13,7 @@ knitr::opts_chunk$set(collapse = TRUE, fig.width=5, fig.height=5)
 # A scalable implementation of Tille's spreading measure based on Moran's I index
 
 
-This index is developped by Tillé et al. (2018) and measure the spreading of a sample drawn from a population. This measure  is more favourable than the original Moran's I index since it is bounded and allows one to discriminate, in absolute terms, between the absence and presence of spatial balance in a sample. The lower bound (-1) indicates maximum spatial balance and the upper bound (+1) indicates a poor spatial balance.
+This index is developped by Tille et al. (2018) and measure the spreading of a sample drawn from a population. This measure  is more favourable than the original Moran's I index since it is bounded and allows one to discriminate, in absolute terms, between the absence and presence of spatial balance in a sample. The lower bound (-1) indicates maximum spatial balance and the upper bound (+1) indicates a poor spatial balance.
 
 
 ```{r include=T, eval=T}
@@ -104,8 +104,8 @@ bigIB <- function(population, samplepoints, tmp_dir, tmp_file, n_cpus=1){
   IB <- c(crossprod(z,w)%*%z  / sqrt(crossprod(z,diag(wi))%*%z * crossprod(z,B)%*%z))
   
   #Remove tmp files
-  #lapply(list.files(tmp_file), function(x) file.remove(x))
-  #lapply(list.files(tmp_fileW), function(x) file.remove(x))
+  lapply(list.files(tmp_file), function(x) file.remove(x))
+  lapply(list.files(tmp_fileW), function(x) file.remove(x))
   
   #Return IB
   return(IB)

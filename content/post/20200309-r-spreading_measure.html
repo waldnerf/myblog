@@ -10,7 +10,7 @@ tags: ["sampling"]
 
 <div id="a-scalable-implementation-of-tilles-spreading-measure-based-on-morans-i-index" class="section level1">
 <h1>A scalable implementation of Tille’s spreading measure based on Moran’s I index</h1>
-<p>This index is developped by Tillé et al. (2018) and measure the spreading of a sample drawn from a population. This measure is more favourable than the original Moran’s I index since it is bounded and allows one to discriminate, in absolute terms, between the absence and presence of spatial balance in a sample. The lower bound (-1) indicates maximum spatial balance and the upper bound (+1) indicates a poor spatial balance.</p>
+<p>This index is developped by Tille et al. (2018) and measure the spreading of a sample drawn from a population. This measure is more favourable than the original Moran’s I index since it is bounded and allows one to discriminate, in absolute terms, between the absence and presence of spatial balance in a sample. The lower bound (-1) indicates maximum spatial balance and the upper bound (+1) indicates a poor spatial balance.</p>
 <pre class="r"><code>
 #&#39; Compute the Ib index of a sample given a population.
 #&#39;
@@ -98,8 +98,8 @@ bigIB &lt;- function(population, samplepoints, tmp_dir, tmp_file, n_cpus=1){
   IB &lt;- c(crossprod(z,w)%*%z  / sqrt(crossprod(z,diag(wi))%*%z * crossprod(z,B)%*%z))
   
   #Remove tmp files
-  #lapply(list.files(tmp_file), function(x) file.remove(x))
-  #lapply(list.files(tmp_fileW), function(x) file.remove(x))
+  lapply(list.files(tmp_file), function(x) file.remove(x))
+  lapply(list.files(tmp_fileW), function(x) file.remove(x))
   
   #Return IB
   return(IB)
@@ -132,7 +132,7 @@ samplepoints &lt;- as.data.frame(population[ss1==1, ])
 
 IB_clustered &lt;- bigIB(population, samplepoints)
 ## ----
-## Location: C:\Users\wal716\AppData\Local\Temp\RtmpwRuFrA\file9da828bd403_100_float.bk
+## Location: C:\Users\wal716\AppData\Local\Temp\Rtmp2fYOOD\file9e1478d05033_100_float.bk
 ## Size on disk: 0 GB
 ## Computing distances ...
 ## Completed!
@@ -149,7 +149,7 @@ samplepoints &lt;- population[ss2==1, ]
 
 IB_systematic &lt;- bigIB(population, samplepoints)
 ## ----
-## Location: C:\Users\wal716\AppData\Local\Temp\RtmpwRuFrA\file9da87fb062ec_100_float.bk
+## Location: C:\Users\wal716\AppData\Local\Temp\Rtmp2fYOOD\file9e142ff96ee5_100_float.bk
 ## Size on disk: 0 GB
 ## Computing distances ...
 ## Completed!
