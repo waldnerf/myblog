@@ -1,0 +1,30 @@
+---
+title: "Harmonic regression in R"
+author: "Franz Waldner"
+date: 2020-03-10T21:13:14-05:00
+categories: ["R"]
+tags: ["ggplot2"]
+---
+
+
+
+<div id="time-series-analysis-with-harmonic-regression." class="section level1">
+<h1>Time series analysis with Harmonic regression.</h1>
+<pre class="r"><code>harmonic_regression &lt;- function(x, y, omega = 1.5){
+  notna &lt;- !is.na(y)
+  if(sum(notna)&gt;7){
+    hr &lt;- lm(y~cos(t1)+sin(t1)+cos(t2)+sin(t2),
+             data = data.frame(t1=(2*omega*pi*x[notna]),
+                               t2=(4*omega*pi*x[notna]),
+                               y = y[notna]))
+    out &lt;- c(hr$coefficients, r2=summary(hr)$r.squared, rmse=sqrt(mean(hr$residuals^2)))
+  } else {
+    out &lt;- rep(NA, 7)
+    names(out) &lt;- c(&quot;(Intercept)&quot;, &quot;cos(t1)&quot;, &quot;sin(t1)&quot;, &quot;cos(t2)&quot;, &quot;sin(t2)&quot;, &quot;r2&quot;, &quot;rmse&quot;)
+  }
+  return(out)
+}
+
+library(ggplot2)
+</code></pre>
+</div>
