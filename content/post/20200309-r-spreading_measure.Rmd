@@ -1,5 +1,5 @@
 ---
-title: "Spreading measure based on Moran's I index"
+title: "A measure of spatial balance"
 author: "Franz Waldner"
 date: 2020-03-09T21:13:14-05:00
 categories: ["R"]
